@@ -1,0 +1,34 @@
+Building microservices with GO
+Lecture: 1 Objectives
+    - Create a webserver and listen on :9090
+    - create  handlers from / and /goodbye
+    - read data from the the request(client) and write the data to the Response(client)
+
+Lecture: 2 Objectives 
+    - create each individual http handler (of type Handler(interface with ServeHTTP(http.ResponseWriter, *http.Request)))
+    - handle logs(depenency injection)
+    - function to return the Handler
+    - create a new serve mux and register a handler to a pattern
+    - manually create http server with Timeouts 
+    - gracefull shutdown - wait until the current ongoing process ends, without interpreting the active connection
+    - create a chennal to handle gracefull shutdown
+
+
+Lecture: 3 Objectives
+    - create product data, with produt structure(slice of structure)
+    - create a function to get all the products
+    - create a new handler for the product
+    - write the data to client, by encoding using json.Marshal
+    - write a new receiver function on the product to write data to io.Writer 
+    - check the method of the request and handle the GET and other not implemented.
+
+Lecture: 4 Objectives
+    - handle a POST request to create a new product
+    - decode data from the request into the struct 
+    - implement PUT to update a resource
+    - identify the resource by extracting the id from the URL path
+    
+Lecture: 5 Objectives
+    - replace http servemux with gorilla router/mux
+    - refactor routes with http method associated
+    - add a middleware to PUT and POST to handle the the data
