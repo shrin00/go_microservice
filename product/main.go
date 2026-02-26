@@ -9,6 +9,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/gorilla/mux"
 	"github.com/shrin00/go_microservice/handler"
 )
 
@@ -21,8 +22,23 @@ func main() {
 	// })
 	// http.Handle("/hello", hw)
 
-	sm := http.NewServeMux()
-	sm.Handle("/", ph)
+	// sm := http.NewServeMux()
+	// sm.Handle("/", ph)
+
+	// create new server mux using gorilla mux
+	sm := mux.NewRouter()
+
+	// register the handlers on the path and method
+	getRouter := sm.Methods(http.MethodGet).Subrouter()
+	getRouter.HandleFunc("/", ph.GetProducts)
+
+	postRouter := sm.Methods(http.MethodPost).Subrouter()
+	postRouter.HandleFunc("/", ph.AddProduct)
+	postRouter.Use(ph.ValidateProductMiddleware)
+
+	putRouter := sm.Methods(http.MethodPut).Subrouter()
+	putRouter.HandleFunc("/{id:\\d+}", ph.UpdateProduct)
+	putRouter.Use(ph.ValidateProductMiddleware)
 
 	s := &http.Server{
 		Addr:    ":9090",

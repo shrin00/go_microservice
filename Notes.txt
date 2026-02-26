@@ -32,3 +32,8 @@ Lecture: 5 Objectives
     - replace http servemux with gorilla router/mux
     - refactor routes with http method associated
     - add a middleware to PUT and POST to handle the the data
+
+Lecture: 6 Objectives
+    - Validate input data passed using validator package
+    - register a custom validator to validate sku
+    - 
