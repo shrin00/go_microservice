@@ -37,3 +37,7 @@ Lecture: 6 Objectives
     - Validate input data passed using validator package
     - register a custom validator to validate sku
     - 
+
+Lecture: 7 Objectives
+    - Document the API's, add intial meta data
+    - Documet a route and Response
