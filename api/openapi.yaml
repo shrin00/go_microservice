@@ -31,12 +31,6 @@ paths:
             default: 20
             minimum: 1
             maximum: 100
-        - name: category
-          in: query
-          description: Filter by product category
-          required: false
-          schema:
-            type: string
       responses:
         '200':
           description: Successful response
