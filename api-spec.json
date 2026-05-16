@@ -1,0 +1,14 @@
+{
+  "openapi": "3.0.3",
+  "info": { "title": "Blog API", "version": "1.0.0" },
+  "paths": {
+    "/posts": {
+      "get": {
+        "responses": { "200": { "description": "Success", "content": {"application/json": { "schema": { "$ref": "#/components/schemas/Post" } } } } }
+      }
+    }
+  },
+  "components": {
+    "schemas": { "Post": { "type": "object", "properties": { "id": {"type": "integer"}, "title": {"type": "string"} } } }
+  }
+}
