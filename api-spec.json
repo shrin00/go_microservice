@@ -4,7 +4,7 @@
   "paths": {
     "/posts": {
       "get": {
-        "responses": { "200": { "description": "SUCCESS", "content": {"application/json": { "schema": { "$ref": "#/components/schemas/Post" } } } } }
+        "responses": { "202": { "description": "SUCCESS", "content": {"application/json": { "schema": { "$ref": "#/components/schemas/Post" } } } } }
       }
     }
   },
