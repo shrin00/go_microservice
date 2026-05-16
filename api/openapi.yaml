@@ -1,0 +1,300 @@
+openapi: 3.0.0
+info:
+  title: Sample E-Commerce API
+  version: 1.0.0
+  description: A sample API for demonstrating Auto-Doc-Hooks documentation generation
+  contact:
+    name: API Support
+    email: support@example.com
+
+servers:
+  - url: https://api.example.com/v1
+    description: Production server
+  - url: https://staging-api.example.com/v1
+    description: Staging server
+
+paths:
+  /products:
+    get:
+      summary: List all products
+      description: Retrieve a paginated list of all products in the catalog
+      operationId: listProducts
+      tags:
+        - Products
+      parameters:
+        - name: page
+          in: query
+          description: Page number for pagination
+          required: false
+          schema:
+            type: integer
+            default: 1
+            minimum: 1
+        - name: limit
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 100
+        - name: category
+          in: query
+          description: Filter by product category
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  products:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+
+    post:
+      summary: Create a new product
+      description: Add a new product to the catalog
+      operationId: createProduct
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        '201':
+          description: Product created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorized
+
+  /products/{productId}:
+    get:
+      summary: Get product by ID
+      description: Retrieve detailed information about a specific product
+      operationId: getProduct
+      tags:
+        - Products
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          description: Unique identifier of the product
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found
+
+    put:
+      summary: Update a product
+      description: Update an existing product's information
+      operationId: updateProduct
+      tags:
+        - Products
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        '200':
+          description: Product updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found
+
+    delete:
+      summary: Delete a product
+      description: Remove a product from the catalog
+      operationId: deleteProduct
+      tags:
+        - Products
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Product deleted successfully
+        '404':
+          description: Product not found
+
+  
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the product
+        name:
+          type: string
+          description: Product name
+        description:
+          type: string
+          description: Detailed product description
+        price:
+          type: number
+          format: float
+          description: Product price in USD
+        category:
+          type: string
+          description: Product category
+        inStock:
+          type: boolean
+          description: Whether the product is currently in stock
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp when the product was created
+        updatedAt:
+          type: string
+          format: date-time
+          description: Timestamp when the product was last updated
+
+    ProductInput:
+      type: object
+      required:
+        - name
+        - price
+        - category
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        description:
+          type: string
+          maxLength: 1000
+        price:
+          type: number
+          format: float
+          minimum: 0
+        category:
+          type: string
+        inStock:
+          type: boolean
+          default: true
+
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        customerId:
+          type: string
+          format: uuid
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+        totalAmount:
+          type: number
+          format: float
+        status:
+          type: string
+          enum: [pending, processing, shipped, delivered, cancelled]
+        createdAt:
+          type: string
+          format: date-time
+
+    OrderInput:
+      type: object
+      required:
+        - customerId
+        - items
+      properties:
+        customerId:
+          type: string
+          format: uuid
+        items:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/OrderItem'
+
+    OrderItem:
+      type: object
+      required:
+        - productId
+        - quantity
+      properties:
+        productId:
+          type: string
+          format: uuid
+        quantity:
+          type: integer
+          minimum: 1
+        price:
+          type: number
+          format: float
+
+    Pagination:
+      type: object
+      properties:
+        currentPage:
+          type: integer
+        totalPages:
+          type: integer
+        totalItems:
+          type: integer
+        itemsPerPage:
+          type: integer
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - bearerAuth: []
+
+# Made with Bob
+
