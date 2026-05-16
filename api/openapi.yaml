@@ -22,14 +22,6 @@ paths:
       tags:
         - Products
       parameters:
-        - name: page
-          in: query
-          description: Page number for pagination
-          required: false
-          schema:
-            type: integer
-            default: 1
-            minimum: 1
         - name: limit
           in: query
           description: Number of items per page
